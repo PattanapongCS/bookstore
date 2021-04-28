@@ -13,4 +13,6 @@ public interface UserService {
 
 	UserOrderPostDataResponse userOrder(UserOrderPostRequest req);
 
+	void deleteUser(Integer userId);
+
 }

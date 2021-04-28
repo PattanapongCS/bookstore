@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -60,6 +62,7 @@ public class BookServiceImp implements BookService{
 	}
 
 	@Override
+	@Transactional
 	public void syncBook() throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
 		RestTemplate restTemplate = RestTemplateUtil.disbleSSL();
 		ResponseEntity<String> response = restTemplate.getForEntity(Constant.BOOK_URL, String.class);

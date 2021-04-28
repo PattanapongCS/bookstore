@@ -88,4 +88,10 @@ public class UserServiceImp implements UserService{
 		return UserOrderPostDataResponse.builder().price(rsPrice).build();
 	}
 
+	@Override
+	@Transactional
+	public void deleteUser(Integer userId) {
+		userRepository.deleteById(userId);
+	}
+
 }
