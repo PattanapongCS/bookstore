@@ -8,4 +8,8 @@ bookstore
   -Git url
   	- https://github.com/PattanapongCS/bookstore
 3. import project and run
+
+# sequence diagram
+link
+	-https://drive.google.com/file/d/17FLzNgmiPRJpYqj0yRXAEcsJSnhEzekP/view?usp=sharing
     
