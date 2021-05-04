@@ -11,4 +11,6 @@ import scb.challenge.book.entity.UserEntity;
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
   
 	List<UserEntity> findByUsername(String username);
+	
+	void deleteByUsername(String username);
 }

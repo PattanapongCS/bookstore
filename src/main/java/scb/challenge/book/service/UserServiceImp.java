@@ -16,6 +16,8 @@ import scb.challenge.book.entity.BookEntity;
 import scb.challenge.book.entity.OrderEntity;
 import scb.challenge.book.entity.UserEntity;
 import scb.challenge.book.exception.BookDuplicateException;
+import scb.challenge.book.exception.ResourceNotFoundException;
+import scb.challenge.book.exception.UsernameDuplicateException;
 import scb.challenge.book.model.UserGetDataResponse;
 import scb.challenge.book.model.UserOrderPostDataResponse;
 import scb.challenge.book.model.UserOrderPostRequest;
@@ -55,13 +57,18 @@ public class UserServiceImp implements UserService{
 	@Override
 	@Transactional
 	public void createUser(UserPostRequest req) {
-		UserEntity user = new UserEntity();
-		user.setUsername(req.getUsername());
-		user.setPassword(req.getPassword());
-		user.setName(req.getName());
-		user.setSurname(req.getSurname());
-		user.setDateOfBirth(req.getDate_of_birth());
-		userRepository.save(user);
+		List<UserEntity> ckeckUsernameDup = userRepository.findByUsername(req.getUsername());
+		if (ObjectUtils.isEmpty(ckeckUsernameDup)) {
+			UserEntity user = new UserEntity();
+			user.setUsername(req.getUsername());
+			user.setPassword(req.getPassword());
+			user.setName(req.getName());
+			user.setSurname(req.getSurname());
+			user.setDateOfBirth(req.getDate_of_birth());
+			userRepository.save(user);
+		} else {
+			throw new UsernameDuplicateException("Username is duplicate name = " + req.getUsername());
+		}
 	}
 
 	@Override
@@ -91,7 +98,12 @@ public class UserServiceImp implements UserService{
 	@Override
 	@Transactional
 	public void deleteUser(Integer userId) {
-		userRepository.deleteById(userId);
+		Optional<UserEntity> rs = userRepository.findById(userId);
+		if (rs.isPresent()) {
+			userRepository.deleteById(userId);
+		} else {
+			throw new ResourceNotFoundException("Not found userId =" + userId);
+		}
 	}
 
 }
